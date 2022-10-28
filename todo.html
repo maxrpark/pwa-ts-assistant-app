@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- styles -->
+    <link rel="stylesheet" href="./assets/styles.css" />
+    <!-- favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../assets/favicon.ico"
+    />
+
+    <title>TypeScript Assistant</title>
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="navbar">
+        <a href="index.html" class="logo"> assistant</a>
+        <a href="todo.html">Todo</a>
+      </div>
+    </nav>
+    <div class="section-center section">
+      <h2 className="title">PWA assistant</h2>
+      <div class="alert-container">
+        <div id="alert-box" class="alert-box">
+          <p id="alert-text" class="alert-text">alert</p>
+        </div>
+      </div>
+      <section class="main-container">
+        <h2>Task List</h2>
+        <form id="form" class="form-container">
+          <input
+            id="input-text"
+            type="text"
+            class="input-control"
+            placeholder="Type something..."
+            maxlength="25"
+            autocomplete="off"
+          />
+        </form>
+
+        <div class="todo-list">
+          <ul class="todo-container">
+            <!--Dynamic content-->
+          </ul>
+        </div>
+
+        <button class="remove-items" id="removeAll">remove all</button>
+      </section>
+    </div>
+    <footer>
+      <p>
+        A PWA made with TypeScript , by
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://twitter.com/MaxCodeJourney"
+        >
+          Maxi Ruti, </a
+        ><span id="year"></span>
+      </p>
+      <p>
+        Visit my other projects
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://my-portfolio-blog-website.netlify.app/"
+        >
+          My Portfolio Website
+        </a>
+      </p>
+    </footer>
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
