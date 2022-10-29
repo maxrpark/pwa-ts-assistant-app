@@ -47,12 +47,11 @@ self.addEventListener("activate", (e) => {
         });
     })
         .catch((err) => {
-        console.log("error 2");
+        console.log(err);
     });
     e.waitUntil(res);
 });
 self.addEventListener("fetch", (e) => {
-    console.log("hello");
     const response = caches.match(e.request).then((res) => {
         if (res)
             return res;
@@ -65,7 +64,7 @@ self.addEventListener("fetch", (e) => {
             return newResp.clone();
         })
             .catch((err) => {
-            console.log("error 3");
+            console.log(err);
         });
     });
     e.respondWith(response);

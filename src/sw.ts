@@ -52,15 +52,13 @@ self.addEventListener("activate", (e: any) => {
       });
     })
     .catch((err: any) => {
-      console.log("error 2");
+      console.log(err);
     });
 
   e.waitUntil(res);
 });
 
 self.addEventListener("fetch", (e: any) => {
-  console.log("hello");
-
   const response = caches.match(e.request).then((res: any) => {
     if (res) return res;
 
@@ -73,7 +71,7 @@ self.addEventListener("fetch", (e: any) => {
         return newResp.clone();
       })
       .catch((err: any) => {
-        console.log("error 3");
+        console.log(err);
       });
   });
 
