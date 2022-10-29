@@ -1,4 +1,4 @@
-import "./js/utils/showYear.js";
+import "./js/showYear.js";
 const container = document.querySelector(".container")! as HTMLDivElement;
 
 const title = document.querySelector("#title")! as HTMLDivElement;

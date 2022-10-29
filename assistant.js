@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import "./js/utils/showYear.js";
+import "./js/showYear.js";
 const container = document.querySelector(".container");
 const title = document.querySelector("#title");
 console.log(title);
