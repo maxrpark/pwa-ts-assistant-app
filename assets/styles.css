@@ -23,6 +23,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+html,
+body {
+  overscroll-behavior-y: contain;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
 body {
   font-family: "Pacifico", cursive;
   font-family: "Roboto", sans-serif;
