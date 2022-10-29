@@ -1,6 +1,7 @@
-import renderList from "./js/utils/renderList.js";
-import "./js/utils/showYear.js";
-import showAlertMessage from "./js/utils/showAlertMessage.js";
+console.log("hello");
+import renderList from "./js/renderList.js";
+import "./js/showYear.js";
+import showAlertMessage from "./js/showAlertMessage.js";
 export let isEditing = false;
 export let todoList;
 const InputText = document.getElementById("input-text");
