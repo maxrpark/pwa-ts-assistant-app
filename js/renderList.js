@@ -2,17 +2,16 @@ import { todoList } from "../index.js";
 const removeItems = document.getElementById("removeAll");
 const todoContainer = document.querySelector(".todo-container");
 const renderList = () => {
-    // render list
-    if (todoList.length > 0) {
-        removeItems.style.display = "block";
-    }
-    else {
-        removeItems.style.display = "none";
-    }
-    const list = todoList
-        .map((task) => {
-        const { id, value } = task;
-        return `<li class="item" data-id="${id}">
+  // render list
+  if (todoList.length > 0) {
+    removeItems.style.display = "block";
+  } else {
+    removeItems.style.display = "none";
+  }
+  const list = todoList
+    .map((task) => {
+      const { _id, value } = task;
+      return `<li class="item" data-id="${_id}">
               <p class="item-value" id="task-value">${value}</p>
               <div class="btns-container">
                 <button id="editItem" class="btn edit editItem">
@@ -54,8 +53,8 @@ const renderList = () => {
               </div>
             </li>`;
     })
-        .join("");
-    todoContainer.innerHTML = list;
-    localStorage.setItem("TSTodoList", JSON.stringify(todoList));
+    .join("");
+  todoContainer.innerHTML = list;
+  localStorage.setItem("TSTodoList", JSON.stringify(todoList));
 };
 export default renderList;

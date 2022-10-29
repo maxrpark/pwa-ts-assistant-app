@@ -1,11 +1,13 @@
-console.log("hello");
-
 import renderList from "./js/renderList.js";
 import "./js/showYear.js";
 import showAlertMessage from "./js/showAlertMessage.js";
 
+var db = new PouchDB("PWATodoList");
+var remoteCouch = false;
+console.log("PWATodoList");
+
 interface Task {
-  id: string;
+  _id: string;
   value: string;
 }
 
@@ -23,10 +25,10 @@ const textValue = InputText;
 let taskID: string | undefined;
 
 class SingleTask {
-  id: string;
+  _id: string;
   value: string;
-  constructor(id: string, value: string) {
-    this.id = id;
+  constructor(_id: string, value: string) {
+    this._id = _id;
     this.value = value;
   }
 }
@@ -42,10 +44,11 @@ if (localStorage.getItem("TSTodoList")) {
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
   if (textValue.value && textValue.value.trim() !== "") {
     if (isEditing) {
       todoList.map((task: Task) => {
-        if (task.id === taskID) {
+        if (task._id === taskID) {
           task.value = textValue.value;
         }
       });
@@ -58,6 +61,15 @@ form.addEventListener("submit", (e) => {
         textValue.value
       );
       todoList.push(newTask);
+
+      db.put(newTask, function callback(err: any, result: any) {
+        if (!err) {
+          console.log("Successfully posted a todo!");
+        } else {
+          console.log(err);
+        }
+      });
+
       textValue.value = "";
       showAlertMessage("Task created", "success");
     }
@@ -91,7 +103,7 @@ todoContainer.addEventListener("click", (e) => {
     if (target.classList.contains("editItem")) {
       isEditing = true;
       todoList.map((task: Task) => {
-        if (task.id === taskID) {
+        if (task._id === taskID) {
           textValue.value = task.value;
         }
       });
@@ -99,7 +111,7 @@ todoContainer.addEventListener("click", (e) => {
     }
     // Delete Task;
     else if (target.classList.contains("deleteItem")) {
-      todoList = todoList.filter((task: Task) => task.id !== taskID);
+      todoList = todoList.filter((task: Task) => task._id !== taskID);
       renderList();
       showAlertMessage("Task Deleted", "danger");
     }

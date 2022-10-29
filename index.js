@@ -1,7 +1,9 @@
-console.log("hello");
 import renderList from "./js/renderList.js";
 import "./js/showYear.js";
 import showAlertMessage from "./js/showAlertMessage.js";
+var db = new PouchDB("PWATodoList");
+var remoteCouch = false;
+console.log("PWATodoList");
 export let isEditing = false;
 export let todoList;
 const InputText = document.getElementById("input-text");
@@ -13,8 +15,8 @@ const removeItems = document.getElementById("removeAll");
 const textValue = InputText;
 let taskID;
 class SingleTask {
-    constructor(id, value) {
-        this.id = id;
+    constructor(_id, value) {
+        this._id = _id;
         this.value = value;
     }
 }
@@ -32,7 +34,7 @@ form.addEventListener("submit", (e) => {
     if (textValue.value && textValue.value.trim() !== "") {
         if (isEditing) {
             todoList.map((task) => {
-                if (task.id === taskID) {
+                if (task._id === taskID) {
                     task.value = textValue.value;
                 }
             });
@@ -43,6 +45,14 @@ form.addEventListener("submit", (e) => {
         else {
             let newTask = new SingleTask(new Date().getTime().toString(), textValue.value);
             todoList.push(newTask);
+            db.put(newTask, function callback(err, result) {
+                if (!err) {
+                    console.log("Successfully posted a todo!");
+                }
+                else {
+                    console.log(err);
+                }
+            });
             textValue.value = "";
             showAlertMessage("Task created", "success");
         }
@@ -75,7 +85,7 @@ todoContainer.addEventListener("click", (e) => {
         if (target.classList.contains("editItem")) {
             isEditing = true;
             todoList.map((task) => {
-                if (task.id === taskID) {
+                if (task._id === taskID) {
                     textValue.value = task.value;
                 }
             });
@@ -83,7 +93,7 @@ todoContainer.addEventListener("click", (e) => {
         }
         // Delete Task;
         else if (target.classList.contains("deleteItem")) {
-            todoList = todoList.filter((task) => task.id !== taskID);
+            todoList = todoList.filter((task) => task._id !== taskID);
             renderList();
             showAlertMessage("Task Deleted", "danger");
         }
