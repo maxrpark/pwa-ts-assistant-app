@@ -1,4 +1,4 @@
-import { todoList } from "../todo.js";
+import { todoList } from "../index.js";
 const removeItems = document.getElementById("removeAll")! as HTMLButtonElement;
 const todoContainer = document.querySelector(
   ".todo-container"

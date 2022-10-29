@@ -21,11 +21,11 @@ self.addEventListener("install", (e: any) => {
       return cache.addAll([
         "/",
         "/index.html",
-        "/todo.html",
+        "/assistant.html",
         "/assets/styles.css",
         // "/img/main.jpg",
         "/index.js",
-        "/todo.js",
+        "/assistant.js",
         "/utils/renderList.js",
         "/utils/showAlertMessage.js",
         "/utils/showYear.js",

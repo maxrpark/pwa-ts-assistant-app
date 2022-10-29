@@ -85,10 +85,10 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-
     <!-- styles -->
     <link rel="stylesheet" href="./assets/styles.css" />
     <!-- favicon -->
+
     <link
       rel="icon"
       type="image/png"
@@ -96,21 +96,43 @@
       href="../assets/favicon.ico"
     />
 
-    <title>PWA Assistant</title>
+    <title>TypeScript Assistant</title>
   </head>
   <body>
     <nav class="nav">
       <div class="navbar">
-        <a href="./index.html" class="logo"> assistant</a>
-        <a href="./todo.html">Todo</a>
+        <a href="assistant.html" class="logo"> assistant</a>
+        <a href="index.html">Todo</a>
       </div>
     </nav>
-    <div class="section">
-      <h2 id="title" class="title">Assistant</h2>
-      <h3 class="title">Same App with different frameworks or languages</h3>
-      <div class="container">
-        <!-- dynamic data -->
+    <div class="section-center section">
+      <h2 className="title">PWA assistant</h2>
+      <div class="alert-container">
+        <div id="alert-box" class="alert-box">
+          <p id="alert-text" class="alert-text">alert</p>
+        </div>
       </div>
+      <section class="main-container">
+        <h2>Task List</h2>
+        <form id="form" class="form-container">
+          <input
+            id="input-text"
+            type="text"
+            class="input-control"
+            placeholder="Type something..."
+            maxlength="25"
+            autocomplete="off"
+          />
+        </form>
+
+        <div class="todo-list">
+          <ul class="todo-container">
+            <!--Dynamic content-->
+          </ul>
+        </div>
+
+        <button class="remove-items" id="removeAll">remove all</button>
+      </section>
     </div>
     <footer>
       <p>
@@ -134,7 +156,6 @@
         </a>
       </p>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="./index.js"></script>
     <script type="module" src="./app.js"></script>
   </body>

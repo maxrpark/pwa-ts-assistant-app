@@ -1,4 +1,4 @@
-import { isEditing } from "../todo.js";
+import { isEditing } from "../index.js";
 const showAlert = document.getElementById("alert-box");
 const alertText = document.getElementById("alert-text");
 let timeOut;
