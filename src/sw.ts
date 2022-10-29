@@ -22,13 +22,13 @@ self.addEventListener("install", (e: any) => {
         "/",
         "/index.html",
         "/todo.html",
-        // "/assets/styles.css",
-        // // "/img/main.jpg",
-        // "/index.js",
-        // "/todo.js",
-        // "/utils/renderList.js",
-        // "/utils/showAlertMessage.js",
-        // "/utils/showYear.js",
+        "/assets/styles.css",
+        // "/img/main.jpg",
+        "/index.js",
+        "/todo.js",
+        "/utils/renderList.js",
+        "/utils/showAlertMessage.js",
+        "/utils/showYear.js",
       ]);
     })
     .catch((err: any) => {
