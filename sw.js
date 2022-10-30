@@ -1,7 +1,5 @@
 "use strict";
-const CACHE_STATIC_NAME = "static-v6";
-const CACHE_DYNAMIC_NAME = "dynamic-v1";
-const CACHE_IMMUTABLE_NAME = "immutable-v1";
+const CACHE_STATIC_NAME = "static-v1";
 const CACHE_DYNAMIC_LIMIT = 50;
 const clearCache = (cacheName, numberOfItems) => {
     caches.open(cacheName).then((cache) => {
@@ -12,22 +10,23 @@ const clearCache = (cacheName, numberOfItems) => {
         });
     });
 };
+const APP_SHELL = [
+    "/",
+    "/index.html",
+    "/assistant.html",
+    "/assets/styles.css",
+    // "/img/main.jpg",
+    "/index.js",
+    "/assistant.js",
+    "/js/renderList.js",
+    "/js/showAlertMessage.js",
+    "/js/showYear.js",
+];
 self.addEventListener("install", (e) => {
     const cacheProm = caches
-        .open(CACHE_DYNAMIC_NAME)
+        .open(CACHE_STATIC_NAME)
         .then((cache) => {
-        return cache.addAll([
-            "/",
-            "/index.html",
-            "/assistant.html",
-            "/assets/styles.css",
-            // "/img/main.jpg",
-            "/index.js",
-            "/assistant.js",
-            "/utils/renderList.js",
-            "/utils/showAlertMessage.js",
-            "/utils/showYear.js",
-        ]);
+        return cache.addAll([]);
     })
         .catch((err) => {
         console.log(err);
@@ -50,14 +49,13 @@ self.addEventListener("activate", (e) => {
 });
 self.addEventListener("fetch", (e) => {
     const response = caches.match(e.request).then((res) => {
-        console.log(res);
         if (res)
             return res;
         return fetch(e.request)
             .then((newResp) => {
-            caches.open(CACHE_DYNAMIC_NAME).then((cache) => {
+            caches.open(CACHE_STATIC_NAME).then((cache) => {
                 cache.put(e.request, newResp);
-                clearCache(CACHE_DYNAMIC_NAME, CACHE_DYNAMIC_LIMIT);
+                clearCache(CACHE_STATIC_NAME, CACHE_DYNAMIC_LIMIT);
             });
             return newResp.clone();
         })
@@ -65,5 +63,16 @@ self.addEventListener("fetch", (e) => {
             console.log(err);
         });
     });
+    // const response = caches
+    //   .open(CACHE_STATIC_NAME)
+    //   .then((cache) => {
+    //     fetch(e.request).then((newResp) => {
+    //       cache.put(e.request, newResp);
+    //     });
+    //     return cache.match(e.request);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     e.respondWith(response);
 });
