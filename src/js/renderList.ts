@@ -11,15 +11,9 @@ interface Task {
 }
 
 const renderList = () => {
-  console.log(todoList);
-
-  // render list
-  if (todoList.length > 0) {
-    removeItems.style.display = "block";
-  } else {
-    removeItems.style.display = "none";
-  }
-
+  todoList.length > 0
+    ? (removeItems.style.display = "block")
+    : (removeItems.style.display = "none");
   const list = todoList
     .map((task: Task) => {
       const { _id, value, isComplete } = task;

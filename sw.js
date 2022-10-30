@@ -32,9 +32,6 @@ self.addEventListener("install", (e) => {
         .catch((err) => {
         console.log(err);
     });
-    // const cacheImmutable = caches
-    //   .open(CACHE_IMMUTABLE_NAME)
-    //   .then((cache) => cache.add(""));
     e.waitUntil(Promise.all([cacheProm]));
 });
 self.addEventListener("activate", (e) => {
@@ -53,6 +50,7 @@ self.addEventListener("activate", (e) => {
 });
 self.addEventListener("fetch", (e) => {
     const response = caches.match(e.request).then((res) => {
+        console.log(res);
         if (res)
             return res;
         return fetch(e.request)

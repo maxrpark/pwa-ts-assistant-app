@@ -2,14 +2,9 @@ import { todoList } from "../index.js";
 const removeItems = document.getElementById("removeAll");
 const todoContainer = document.querySelector(".todo-container");
 const renderList = () => {
-    console.log(todoList);
-    // render list
-    if (todoList.length > 0) {
-        removeItems.style.display = "block";
-    }
-    else {
-        removeItems.style.display = "none";
-    }
+    todoList.length > 0
+        ? (removeItems.style.display = "block")
+        : (removeItems.style.display = "none");
     const list = todoList
         .map((task) => {
         const { _id, value, isComplete } = task;

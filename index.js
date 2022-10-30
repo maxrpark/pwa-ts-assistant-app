@@ -1,10 +1,8 @@
-import renderList from "./js/renderList.js";
 import "./js/showYear.js";
+import renderList from "./js/renderList.js";
 import showAlertMessage from "./js/showAlertMessage.js";
 //@ts-ignore
 var db = new PouchDB("PWATodoList");
-var remoteCouch = false;
-console.log("PWATodoList");
 export let isEditing = false;
 export let todoList;
 const InputText = document.getElementById("input-text");
@@ -15,14 +13,7 @@ const removeItems = document.getElementById("removeAll");
 // variables
 const textValue = InputText;
 let taskID;
-class SingleTask {
-    constructor(_id, value) {
-        this._id = _id;
-        this.value = value;
-        this.isComplete = false;
-    }
-}
-const showTodos = () => {
+const showTodoList = () => {
     db.allDocs({ include_docs: true, descending: true }).then((doc) => {
         todoList = doc.rows.map((task) => {
             // TODO
@@ -34,8 +25,8 @@ const showTodos = () => {
 db.changes({
     since: "now",
     live: true,
-}).on("change", showTodos);
-showTodos();
+}).on("change", showTodoList);
+showTodoList();
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (textValue.value && textValue.value.trim() !== "") {
@@ -51,8 +42,11 @@ form.addEventListener("submit", (e) => {
             showAlertMessage("Edited", "success");
         }
         else {
-            let newTask = new SingleTask(new Date().getTime().toString(), textValue.value);
-            // todoList.unshift(newTask);
+            let newTask = {
+                _id: new Date().getTime().toString(),
+                value: textValue.value,
+                isComplete: false,
+            };
             db.put(newTask);
             textValue.value = "";
             showAlertMessage("Task created", "success");
@@ -61,15 +55,16 @@ form.addEventListener("submit", (e) => {
     else {
         showAlertMessage("Please enter a task", "danger");
     }
-    // renderList();
 });
 // Remove items
 removeItems.addEventListener("click", () => {
     todoContainer.innerHTML = ""; // check this later
     todoList = [];
+    db.destroy().then(function () {
+        db = new PouchDB("PWATodoList");
+    });
     removeItems.style.display = "none";
     showAlertMessage("All Tasks Deleted", "danger");
-    // renderList(); // to clear local storage
 });
 // Task options
 todoContainer.addEventListener("click", (e) => {
