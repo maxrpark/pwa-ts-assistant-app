@@ -1,15 +1,12 @@
 import renderList from "./js/renderList.js";
 import "./js/showYear.js";
 import showAlertMessage from "./js/showAlertMessage.js";
+import { Task, Doc, Row } from "./interfaces/index.js";
 
+//@ts-ignore
 var db = new PouchDB("PWATodoList");
 var remoteCouch = false;
 console.log("PWATodoList");
-
-interface Task {
-  _id: string;
-  value: string;
-}
 
 export let isEditing: boolean = false;
 export let todoList: Task[];
@@ -27,20 +24,30 @@ let taskID: string | undefined;
 class SingleTask {
   _id: string;
   value: string;
+  isComplete: boolean;
   constructor(_id: string, value: string) {
     this._id = _id;
     this.value = value;
+    this.isComplete = false;
   }
 }
 
-// Create localStorage
-if (localStorage.getItem("TSTodoList")) {
-  todoList = JSON.parse(localStorage.getItem("TSTodoList")!);
-  renderList();
-} else {
-  todoList = [];
-  localStorage.setItem("TSTodoList", JSON.stringify(todoList));
-}
+const showTodos = () => {
+  db.allDocs({ include_docs: true, descending: true }).then((doc) => {
+    todoList = doc.rows.map((task: any) => {
+      // TODO
+      return task.doc;
+    });
+    renderList();
+  });
+};
+
+db.changes({
+  since: "now",
+  live: true,
+}).on("change", showTodos);
+
+showTodos();
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -50,6 +57,7 @@ form.addEventListener("submit", (e) => {
       todoList.map((task: Task) => {
         if (task._id === taskID) {
           task.value = textValue.value;
+          db.put(task);
         }
       });
       textValue.value = "";
@@ -60,15 +68,9 @@ form.addEventListener("submit", (e) => {
         new Date().getTime().toString(),
         textValue.value
       );
-      todoList.push(newTask);
+      // todoList.unshift(newTask);
 
-      db.put(newTask, function callback(err: any, result: any) {
-        if (!err) {
-          console.log("Successfully posted a todo!");
-        } else {
-          console.log(err);
-        }
-      });
+      db.put(newTask);
 
       textValue.value = "";
       showAlertMessage("Task created", "success");
@@ -76,7 +78,7 @@ form.addEventListener("submit", (e) => {
   } else {
     showAlertMessage("Please enter a task", "danger");
   }
-  renderList();
+  // renderList();
 });
 
 // Remove items
@@ -85,7 +87,7 @@ removeItems.addEventListener("click", () => {
   todoList = [];
   removeItems.style.display = "none";
   showAlertMessage("All Tasks Deleted", "danger");
-  renderList(); // to clear local storage
+  // renderList(); // to clear local storage
 });
 
 // Task options
@@ -94,10 +96,17 @@ todoContainer.addEventListener("click", (e) => {
   textValue.value = "";
   isEditing = false;
   taskID = (target.parentElement!.parentElement as HTMLElement).dataset.id;
+  let task: Task | undefined = todoList.find(
+    (task: Task) => task._id == taskID
+  );
+
+  if (!task) return;
 
   // Complete task
   if (target.classList.contains("completeItem")) {
     target.parentElement!.parentElement!.classList.toggle("isComplete");
+    task!.isComplete = !task!.isComplete;
+    db.put(task);
   } else {
     // Edit task
     if (target.classList.contains("editItem")) {
@@ -111,8 +120,8 @@ todoContainer.addEventListener("click", (e) => {
     }
     // Delete Task;
     else if (target.classList.contains("deleteItem")) {
-      todoList = todoList.filter((task: Task) => task._id !== taskID);
-      renderList();
+      db.remove(task);
+
       showAlertMessage("Task Deleted", "danger");
     }
   }

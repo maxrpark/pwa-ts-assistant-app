@@ -5,11 +5,14 @@ const todoContainer = document.querySelector(
 )! as HTMLDivElement;
 
 interface Task {
-  id: string;
+  _id: string;
   value: string;
+  isComplete: boolean;
 }
 
 const renderList = () => {
+  console.log(todoList);
+
   // render list
   if (todoList.length > 0) {
     removeItems.style.display = "block";
@@ -19,8 +22,8 @@ const renderList = () => {
 
   const list = todoList
     .map((task: Task) => {
-      const { id, value } = task;
-      return `<li class="item" data-id="${id}">
+      const { _id, value, isComplete } = task;
+      return `<li class="item ${isComplete && "isComplete"}" data-id="${_id}">
               <p class="item-value" id="task-value">${value}</p>
               <div class="btns-container">
                 <button id="editItem" class="btn edit editItem">
